@@ -46,10 +46,10 @@ public class Main {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
         EntityManager em = emf.createEntityManager();
 
-        Query qr= em.createQuery("select hp.receiver from HousePoint hp group by hp.receiver order by sum(hp.points) desc LIMIT 1");
-        Object bestStudent = qr.getSingleResult();
+        Query qr= em.createQuery("select hp.receiver.firstName from HousePoint hp group by hp.receiver order by sum(hp.points) desc LIMIT 1");
+        String bestStudent = (String) qr.getSingleResult();
         try {
-            System.out.println(bestStudent.toString());
+            System.out.println(bestStudent);
 
         } catch (Exception e) {
             em.getTransaction().rollback();
