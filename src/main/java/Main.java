@@ -7,17 +7,20 @@ import model.Person;
 
 
 import java.util.List;
-import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
         //studentsByProfesor(99);
 
-        bestStudent();
+        //bestStudent();
+
+        mostGiverStudent();
+
+
     }
 
 
-    public static void studentsByProfesor (Integer idProfesor){
+    public static void studentsByProfesor(Integer idProfesor){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
         EntityManager em = emf.createEntityManager();
 
@@ -59,4 +62,26 @@ public class Main {
             emf.close();
         }
     }
+
+    public static void mostGiverStudent(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+        EntityManager em = emf.createEntityManager();
+
+        Query qr= em.createQuery("select hp.giver.firstName from HousePoint hp group by hp.giver order by sum(hp.points) desc LIMIT 1");
+        String mostGiverStudent = (String) qr.getSingleResult();
+        try {
+            System.out.println(mostGiverStudent);
+
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+            emf.close();
+        }
+    }
+
+
+
+
 }
